@@ -1,0 +1,368 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>For My Favorite Human 💖</title>
+  <link href="https://fonts.googleapis.com/css2?family=Sacramento&family=Quicksand&display=swap" rel="stylesheet">
+  <style>
+    body {
+      margin: 0;
+      background: linear-gradient(135deg, #e8c1d8, #f6e0c3);
+      font-family: 'Quicksand', sans-serif;
+      color: #333;
+      overflow-x: hidden;
+    }
+
+    header {
+      text-align: center;
+      padding: 60px 20px 20px;
+    }
+
+    h1 {
+      font-family: 'Sacramento', cursive;
+      font-size: 3rem;
+      color: #d16e6a;
+    }
+
+    .photos {
+      display: flex;
+      justify-content: center;
+      flex-wrap: wrap;
+      gap: 20px;
+      padding: 30px;
+    }
+
+    .polaroid {
+      background: white;
+      padding: 10px;
+      border-radius: 10px;
+      box-shadow: 0 8px 20px rgba(0,0,0,0.2);
+      text-align: center;
+      cursor: pointer;
+      width: 160px;
+      transition: transform 0.3s;
+    }
+
+    .polaroid:hover {
+      transform: scale(1.05);
+    }
+
+    .polaroid img {
+      width: 100%;
+      border-radius: 8px;
+    }
+
+    .polaroid p {
+      margin-top: 8px;
+      font-size: 0.9rem;
+    }
+
+    .letter-wrapper {
+      position: relative;
+      margin: 50px auto;
+      width: 90%;
+      max-width: 600px;
+      height: 120px;
+      background: #fffaf0;
+      border: 2px solid #d89c4c;
+      border-radius: 20px;
+      box-shadow: 0 15px 30px rgba(0,0,0,0.15);
+      overflow: hidden;
+      cursor: pointer;
+      transition: height 1.2s ease-in-out;
+    }
+
+    .letter-wrapper.open {
+      height: auto;
+    }
+
+    .ribbon {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      font-size: 2rem;
+      background: #d16e6a;
+      color: white;
+      padding: 10px 20px;
+      border-radius: 50px;
+      z-index: 2;
+      transition: opacity 0.5s ease;
+    }
+
+    .letter-wrapper.open .ribbon {
+      opacity: 0;
+      pointer-events: none;
+    }
+
+    .letter {
+      padding: 40px;
+      font-size: 1.2rem;
+      line-height: 1.7;
+      color: #4a4a4a;
+      display: none;
+    }
+
+    .line {
+      opacity: 0;
+      transition: opacity 1s ease-in-out;
+      margin-bottom: 15px;
+    }
+
+    .shayari-scroll {
+      width: 90%;
+      max-width: 600px;
+      margin: 30px auto;
+      background: #fff6e0;
+      border: 2px dashed #d89c4c;
+      padding: 25px 30px;
+      border-radius: 30px;
+      font-family: 'Sacramento', cursive;
+      font-size: 1.5rem;
+      color: #7a4b00;
+      box-shadow: 0 0 30px rgba(0,0,0,0.1);
+      opacity: 0;
+      transform: scale(0.95);
+      transition: all 1s ease-in-out;
+      text-align: center;
+    }
+
+    .shayari-line {
+      margin: 12px 0;
+      opacity: 0;
+      transform: translateY(10px);
+      animation: fadeUp 1s forwards;
+    }
+
+    @keyframes fadeUp {
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    .heart {
+      position: fixed;
+      bottom: 50px;
+      font-size: 20px;
+      color: #ff5b8a;
+      animation: floatUp 2.5s ease-out forwards;
+      pointer-events: none;
+      opacity: 0.9;
+      z-index: 100;
+    }
+
+    @keyframes floatUp {
+      0% {
+        transform: translateY(0) scale(1);
+        opacity: 0.9;
+      }
+      100% {
+        transform: translateY(-150px) scale(1.5);
+        opacity: 0;
+      }
+    }
+
+    .fullscreen {
+      display: none;
+      position: fixed;
+      top: 0; left: 0;
+      width: 100%; height: 100%;
+      background: rgba(0, 0, 0, 0.8);
+      justify-content: center;
+      align-items: center;
+      z-index: 999;
+    }
+
+    .fullscreen img {
+      max-width: 90%;
+      max-height: 90%;
+      border-radius: 10px;
+    }
+
+    .footer {
+      text-align: center;
+      margin: 60px 0 30px;
+      color: #777;
+      font-size: 0.9rem;
+    }
+
+    /* Custom Audio Button */
+    .audio-toggle {
+      position: fixed;
+      top: 20px;
+      right: 20px;
+      width: 60px;
+      height: 60px;
+      background: #d16e6a;
+      color: white;
+      font-size: 24px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      border-radius: 50%;
+      box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+      cursor: pointer;
+      z-index: 1000;
+      transition: background 0.3s ease;
+    }
+
+    .audio-toggle:hover {
+      background: #b95559;
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Hidden Audio -->
+  <audio id="bg-music" loop autoplay preload="auto">
+    <source src="music.mp3" type="audio/mpeg" />
+    <source src="music.ogg" type="audio/ogg" />
+  </audio>
+
+  <!-- Custom Audio Button -->
+  <div class="audio-toggle" onclick="toggleMusic()">
+    <span id="music-icon">🔊</span>
+  </div>
+
+  <header>
+    <h1>For My Favorite Human 💖</h1>
+    <p>A tiny gift with big love inside ✨</p>
+  </header>
+
+  <section class="photos">
+    <div class="polaroid" onclick="showFullscreen('pic1.jpg')">
+      <img src="pic1.jpg" alt="Memory 1">
+      <p>Throwback vibes 😄</p>
+    </div>
+    <div class="polaroid" onclick="showFullscreen('pic2.jpg')">
+      <img src="pic2.jpg" alt="Memory 2">
+      <p>Your chaotic smile 😆</p>
+    </div>
+    <div class="polaroid" onclick="showFullscreen('pic3.jpg')">
+      <img src="pic3.jpg" alt="Memory 3">
+      <p>Best days ever 💕</p>
+    </div>
+  </section>
+
+  <!-- Folded Letter with Ribbon -->
+  <div class="letter-wrapper" onclick="openLetter()">
+    <div class="ribbon">🎀</div>
+    <section class="letter" id="letter">
+      <!-- Letter lines will appear here -->
+    </section>
+  </div>
+
+  <div class="shayari-scroll" id="shayari">
+    <p class="shayari-line">"Kabhi lafzon mein, kabhi khamoshiyon mein,</p>
+    <p class="shayari-line">Tera saath har jagah mehsoos hota hai.</p>
+    <p class="shayari-line">Dosti sirf ek rishta nahi hoti,</p>
+    <p class="shayari-line">Yeh toh ek rooh ka sukoon hoti hai." ✨</p>
+  </div>
+
+  <div class="fullscreen" id="fullscreen" onclick="hideFullscreen()">
+    <img id="fullImage" src="" alt="Fullscreen" />
+  </div>
+
+  <div class="footer">
+    Made with extra love & a little bit of code 💌
+  </div>
+
+  <script>
+    const letterLines = [
+    "Dear Bestie,💖",
+    "There’s no special occasion… just a little reminder that you mean a lot to me.",
+    "Every moment spent with you is very special for me💝",
+    "You are not just my best friend, you are more than that to me🤍",
+    "Whenever I am in a bad mood, just remembering you is enough and then everything will be fine😊",
+    "Thank you for being you — real, raw, and ridiculously awesome. 🌻",
+    "I had decided to make this program when your health was bad two days ago. Then I had decided that it is a small one but I will give you a very special surprise.🎁",
+    "I don't have expensive gifts like others nor have you ever asked me for anything, I have made this with a lot of love for you🥰",
+    "Love you Always and Forever Chikku💖",
+    "Tera Kapiya💞"
+    ];
+
+    function openLetter() {
+      const wrapper = document.querySelector('.letter-wrapper');
+      const letter = document.getElementById("letter");
+
+      if (!wrapper.classList.contains('open')) {
+        wrapper.classList.add('open');
+        letter.style.display = "block";
+
+        // Animate letter lines
+        letterLines.forEach((line, index) => {
+          const p = document.createElement("p");
+          p.classList.add("line");
+          p.textContent = line;
+          letter.appendChild(p);
+
+          setTimeout(() => {
+            p.style.opacity = 1;
+          }, index * 2000);
+        });
+
+        // Reveal shayari and hearts
+        setTimeout(() => {
+          const shayari = document.getElementById("shayari");
+          shayari.style.opacity = 1;
+          shayari.style.transform = "scale(1)";
+
+          const lines = document.querySelectorAll(".shayari-line");
+          lines.forEach((line, i) => {
+            line.style.animationDelay = `${i * 0.8}s`;
+          });
+
+          for (let i = 0; i < 10; i++) {
+            setTimeout(createFloatingHeart, i * 300);
+          }
+        }, letterLines.length * 2000 + 1000);
+      }
+    }
+
+    function showFullscreen(src) {
+      const fs = document.getElementById("fullscreen");
+      const img = document.getElementById("fullImage");
+      img.src = src;
+      fs.style.display = "flex";
+    }
+
+    function hideFullscreen() {
+      document.getElementById("fullscreen").style.display = "none";
+    }
+
+    function createFloatingHeart() {
+      const heart = document.createElement('div');
+      heart.classList.add('heart');
+      heart.textContent = '💖';
+      heart.style.left = Math.random() * 90 + 5 + 'vw';
+      heart.style.fontSize = (Math.random() * 10 + 16) + 'px';
+      document.body.appendChild(heart);
+
+      setTimeout(() => {
+        heart.remove();
+      }, 2500);
+    }
+
+    // 🎵 Audio Toggle Logic
+    const bgMusic = document.getElementById("bg-music");
+    const icon = document.getElementById("music-icon");
+
+    window.addEventListener('load', () => {
+      bgMusic.play().catch(() => {});
+    });
+
+    function toggleMusic() {
+      if (bgMusic.paused) {
+        bgMusic.play();
+        icon.textContent = "🔊";
+      } else {
+        bgMusic.pause();
+        icon.textContent = "🔇";
+      }
+    }
+  </script>
+
+</body>
+</html>
